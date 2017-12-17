@@ -6,6 +6,7 @@
     "description": "Add website you are browsing as a Fastladder pin.",
 
     "permissions": [
+        "storage",
         "tabs",
         "notifications",
         "http://*/*/",
