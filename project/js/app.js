@@ -11,13 +11,17 @@ chrome.browserAction.onClicked.addListener(function() {
             fastladderUrl.href = items.fastladder.url;
             if (fastladderUrl.protocol !== 'https:' && fastladderUrl.protocol !== 'http:') {
                 chrome.tabs.create({ url: "view/options.html" });
+                chrome.notifications.create(
+                    "",
+                    { type: "basic", title: "Fastladder URL is invalid.", message: "Check out your settings.", iconUrl:"icons/icon48.png" },
+                    function(id) { }
+                );
                 return;
             }
+            else {
+                //console.log(items.fastladder.url);
+            }
         });
-
-        //var entity = { fastladder: { url: '' } };
-        //chrome.storage.local.set(entity, function() {
-        //});
 
     });
 });
