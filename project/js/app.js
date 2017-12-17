@@ -10,6 +10,8 @@ chrome.browserAction.onClicked.addListener(function() {
             var fastladderUrl  = document.createElement('a');
             fastladderUrl.href = items.fastladder.url;
             if (fastladderUrl.protocol !== 'https:' && fastladderUrl.protocol !== 'http:') {
+                chrome.tabs.create({ url: "view/options.html" });
+                return;
             }
         });
 
