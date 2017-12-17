@@ -1,9 +1,6 @@
 chrome.browserAction.onClicked.addListener(function() {
     chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
 
-        //var link = tabs[0].url;
-        //var title = tabs[0].title;
-
         var defaults = { fastladder: { url: '' } };
         chrome.storage.local.get(defaults, function(items) {
             // check if fastladder url is valid
@@ -18,9 +15,36 @@ chrome.browserAction.onClicked.addListener(function() {
                 );
                 return;
             }
-            else {
-                //console.log(items.fastladder.url);
-            }
+            // add a pin
+            var link = tabs[0].url;
+            var title = tabs[0].title;
+            var apiUrl = items.fastladder.url + "/api/pin/add?link=" + encodeURIComponent(link) + "&title=" + encodeURIComponent(title);
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function(data) {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    // succeeded
+                    //{
+                    //    chrome.notifications.create(
+                    //        title,
+                    //        { type: "basic", title: "Successfully added a pin.", message: title + "\n" + link, iconUrl:"icons/icon48.png" },
+                    //        function(id) { }
+                    //    );
+                    //}
+                    // 401
+                    //{
+                    //    var loginUrl = items.fastladder.url + "/login";
+                    //    chrome.tabs.create({ url: loginUrl });
+                    //    chrome.notifications.create(
+                    //        "",
+                    //        { type: "basic", title: "Failed to push a pin.", message: "Login to Fastladder.", iconUrl:"icons/icon48.png" },
+                    //        function(id) { }
+                    //    );
+                    //}
+                }
+            };
+            xhr.open('POST', apiUrl, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send();
         });
 
     });
