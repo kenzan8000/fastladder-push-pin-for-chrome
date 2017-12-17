@@ -1,0 +1,28 @@
+{
+    "name": "Fastladder Push Pin for Chrome",
+    "version": "1.0",
+    "manifest_version": 2,
+
+    "description": "Add website you are browsing as a Fastladder pin.",
+
+    "permissions": [
+        "tabs",
+        "notifications",
+        "http://*/*/",
+        "https://*/*/"
+    ],
+
+    "icons": {
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    },
+
+    "background": {
+        "scripts": ["js/app.js"]
+    },
+
+    "browser_action": {
+        "default_icon": "icons/icon19.png",
+        "default_title": "Fastladder Push Pin for Chrome"
+    }
+}
