@@ -22,24 +22,29 @@ chrome.browserAction.onClicked.addListener(function() {
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function(data) {
                 if (xhr.readyState == XMLHttpRequest.DONE) {
+                    var responseJson = {};
+                    try { responseJson = JSON.parse(xhr.responseText); }
+                    catch (e) { }
                     // succeeded
-                    //{
-                    //    chrome.notifications.create(
-                    //        title,
-                    //        { type: "basic", title: "Successfully added a pin.", message: title + "\n" + link, iconUrl:"icons/icon48.png" },
-                    //        function(id) { }
-                    //    );
-                    //}
-                    // 401
-                    //{
-                    //    var loginUrl = items.fastladder.url + "/login";
-                    //    chrome.tabs.create({ url: loginUrl });
-                    //    chrome.notifications.create(
-                    //        "",
-                    //        { type: "basic", title: "Failed to push a pin.", message: "Login to Fastladder.", iconUrl:"icons/icon48.png" },
-                    //        function(id) { }
-                    //    );
-                    //}
+                    var successfullyAdded = (responseJson.isSuccess === true);
+                    var alreadyAdded = (xhr.status === 500 && xhr.responseText.indexOf('ActiveRecord::RecordNotUnique') !== -1); // !?!?
+                    if (successfullyAdded || alreadyAdded) {
+                        chrome.notifications.create(
+                            title,
+                            { type: "basic", title: "Successfully added a pin.", message: title + "\n" + link, iconUrl:"icons/icon48.png" },
+                            function(id) { }
+                        );
+                    }
+                    // failed?
+                    else {
+                        var loginUrl = items.fastladder.url + "/login";
+                        chrome.tabs.create({ url: loginUrl });
+                        chrome.notifications.create(
+                            "",
+                            { type: "basic", title: "Failed to push a pin.", message: "Login to Fastladder.", iconUrl:"icons/icon48.png" },
+                            function(id) { }
+                        );
+                    }
                 }
             };
             xhr.open('POST', apiUrl, true);
